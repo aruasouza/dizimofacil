@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dízimo Fácil</title>
+</head>
+<body>
+    {% if error%}
+    <p><strong>{{error}}</strong></p>
+    {% endif%}
+    <h1>Criar conta</h1>
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        {{ form.nome }}
+        {{ form.email }}
+        {{ form.senha }}
+        {{ form.confirm }}
+        {{ form.submit }}
+    </form>
+    <a href="{{url_for('login')}}">Entre na sua conta</a><br>
+</body>
+</html>
