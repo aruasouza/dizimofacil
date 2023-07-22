@@ -3,19 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dízimo Fácil</title>
+    <title>Bom Católico</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    {% if error%}
-    <p><strong>{{error}}</strong></p>
-    {% endif%}
-    <h1>Entrar na conta</h1>
-    <form method="POST" action="">
-        {{ form.hidden_tag() }}
-        {{ form.email }}
-        {{ form.senha }}
-        {{ form.submit }}
-    </form>
-    <a href="{{url_for('register')}}">Criar conta</a><br>
+    <a class="floating-button" href="{{url_for('register')}}">Criar conta</a>
+    <div class="login-container">
+        <h1>Criar conta</h1>
+        {% if error%}
+        <p class="erro">{{error}}</p>
+        {% endif%}
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                <label for="email">Email</label>
+                {{ form.email }}
+            </div>
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                {{ form.senha }}
+            </div>
+            {{ form.submit }}
+        </form>
+    </div>
+    
 </body>
 </html>

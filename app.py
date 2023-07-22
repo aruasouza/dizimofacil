@@ -79,10 +79,13 @@ def register():
         senha = hashlib.sha256(form.senha.data.encode()).hexdigest()
         confirm = hashlib.sha256(form.confirm.data.encode()).hexdigest()
         nome = form.nome.data
+        sobrenome = form.sobrenome.data
+        nascimento = form.nascimento.data
+        sexo = form.sexo.data
         email = form.email.data
         if senha == confirm:
             if verify_email(email):
-                create_user(nome,email,senha)
+                create_user(nome,sobrenome,nascimento,sexo,email,senha)
                 flash('Usuário criado com sucesso.')
                 return redirect(url_for('login'))
             else:

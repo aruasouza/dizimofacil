@@ -3,21 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dízimo Fácil</title>
+    <title>Bom Católico</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    {% if error%}
-    <p><strong>{{error}}</strong></p>
-    {% endif%}
-    <h1>Criar conta</h1>
-    <form method="POST" action="">
-        {{ form.hidden_tag() }}
-        {{ form.nome }}
-        {{ form.email }}
-        {{ form.senha }}
-        {{ form.confirm }}
-        {{ form.submit }}
-    </form>
-    <a href="{{url_for('login')}}">Entre na sua conta</a><br>
+    <a class="floating-button" href="{{url_for('login')}}">Entrar</a>
+    <div class="login-container">
+        <h1>Criar conta</h1>
+        {% if error%}
+        <p class="erro">{{error}}</p>
+        {% endif%}
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                {{ form.nome }}
+            </div>
+            <div class="form-group">
+                <label for="sobrenome">Sobrenome</label>
+                {{ form.sobrenome }}
+            </div>
+            <div class="form-group">
+                <label for="nascimento">Data de nascimento</label>
+                {{ form.nascimento }}
+            </div>
+            <div class="form-group">
+                <label for="sexo">Sexo</label>
+                {{ form.sexo }}
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                {{ form.email }}
+            </div>
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                {{ form.senha }}
+            </div>
+            <div class="form-group">
+                <label for="confirm">Confirme sua senha</label>
+                {{ form.confirm }}
+            </div>
+            {{ form.submit }}
+        </form>
+    </div>
+    
 </body>
 </html>

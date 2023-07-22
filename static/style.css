@@ -1,0 +1,82 @@
+body {
+    background-color: white;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.login-container {
+    background-color: white;
+    border-radius: 10px;
+    padding: 70px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    margin: 30px;
+    width: 400px;
+}
+
+h1 {
+    color: black;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.erro {
+    color: red;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: black;
+    font-size: 18px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="date"],
+select#sexo {
+    width: 90%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    font-size: 16px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+input[type="submit"] {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+input[type="submit"]:hover {
+    background-color: #444;
+}
+
+.floating-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: black;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 18px;
+}
