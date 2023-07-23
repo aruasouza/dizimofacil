@@ -8,26 +8,23 @@
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='logo.png') }}">
 </head>
 <body>
-    <a class="floating-button" href="{{url_for('register')}}">Criar conta</a>
     <div class="login-container">
-        <h1>Entrar</h1>
+        <h1>Crie uma nova senha</h1>
         {% if error%}
         <p class="erro">{{error}}</p>
         {% endif%}
         <form method="POST" action="">
             {{ form.hidden_tag() }}
             <div class="form-group">
-                <label for="email">Email</label>
-                {{ form.email }}
-            </div>
-            <div class="form-group">
-                <label for="senha">Senha</label>
+                <label for="senha">Nova senha</label>
                 {{ form.senha }}
             </div>
+            <div class="form-group">
+                <label for="confirm">Confirme sua nova senha</label>
+                {{ form.confirm }}
+            </div>
             {{ form.submit }}
-            <div class="recsenha"><a class="link" href="{{url_for('recuperarsenha')}}">Esqueci minha senha</a></div>
         </form>
     </div>
-    
 </body>
 </html>

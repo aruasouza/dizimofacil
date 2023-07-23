@@ -15,9 +15,11 @@ for url in admin_urls:
     if url in private:
         private[url].add('3')
     else:
-        private[url] = set(['3'])
+        private[url] = set('3')
 for url in admigreja_urls:
     if url in private:
         private[url].add('2')
     else:
-        private[url] = set(['2'])
+        private[url] = set('2')
+
+special_case = {'/novasenha','/static/style.css'}

@@ -1,7 +1,7 @@
 from flask import Flask,render_template,url_for,redirect,flash,request,abort
 from flask_login import UserMixin, login_user, LoginManager, logout_user, current_user, login_required
-from user_forms import LoginForm,RegisterForm
-from user_operations import verify_email,create_user,user_login,get_user
+from user_forms import *
+from user_operations import *
 import hashlib
 from groups import *
 
@@ -9,7 +9,7 @@ app = Flask(__name__)
 with open('config/key','r') as f:
     app.config['SECRET_KEY'] = f.read()
 login_manager = LoginManager()
-login_manager.init_app(app) 
+login_manager.init_app(app)
 
 class DbUser:
     def __init__(self, user):
@@ -21,6 +21,8 @@ class DbUser:
         return self._user['id']
     def get_perfil(self):
         return self._user['perfil']
+    def get_temp(self):
+        return True if self._user['temp'] == 't' else False
     
 def verify_redirect(next):
     if next in allow_red:
@@ -28,15 +30,27 @@ def verify_redirect(next):
     return 'home'
     
 @app.before_request
-def require_login():
-    if request.path in login_required_urls:
-        if not current_user.is_authenticated:
-            return redirect(url_for('login',next = request.path[1:]))
-    if request.path in private: 
-        if not current_user.is_authenticated:
-            return redirect(url_for('login',next = request.path[1:]))
+def verify_permissions():
+    login_needed = request.path in login_required_urls
+    special_privilege = request.path in private
+    auth = current_user.is_authenticated
+    if not login_needed and not special_privilege and not auth:
+        return
+    if (login_needed or special_privilege) and not auth:
+        return redirect(url_for('login',next = request.path[1:]))
+    if login_needed and auth:
+        if current_user.get_temp():
+            return redirect(url_for('novasenha'))
+        return
+    if special_privilege and auth:
+        if current_user.get_temp():
+            return redirect(url_for('novasenha'))
         if current_user.get_perfil() not in private[request.path]:
             abort(401)
+        return
+    if auth and (request.path not in special_case):
+        if current_user.get_temp():
+            return redirect(url_for('novasenha'))
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -47,8 +61,12 @@ def load_user(user_id):
         return None
 
 @app.route('/')
-@login_required
 def home():
+    return '<h1>Bem vindo, usuário</h1>'
+
+@app.route('/userarea')
+@login_required
+def userarea():
     return render_template('welcome.html')
 
 @app.route('/login',methods = ['GET','POST'])
@@ -64,7 +82,6 @@ def login():
         email = form.email.data
         user = user_login(email,senha)
         if user: 
-            flash('Login realizado com sucesso.')
             login_user(DbUser(user))
             flash('Login efetuado com sucesso.')
             return redirect(url_for(next))
@@ -94,6 +111,59 @@ def register():
             error = 'As senhas devem ser iguais.'
     return render_template('register.html',form = form,error = error)
 
+@app.route('/recuperarsenha',methods = ['GET','POST'])
+def recuperarsenha():
+    form = EmailForm()
+    error = None
+    if form.validate_on_submit():
+        email = form.email.data
+        if not verify_email(email):
+            restore_password(email)
+            return redirect(url_for('inserircodigo',email = email))
+        else:
+            error = 'Email não cadastrado.'
+    return render_template('recuperarsenha.html',form = form,error = error)
+
+@app.route('/inserircodigo',methods = ['GET','POST'])
+def inserircodigo():
+    form = CodeForm()
+    error = None
+    email = request.args.get('email')
+    if not email:
+        return redirect(url_for('recuperarsenha'))
+    if form.validate_on_submit():
+        code = form.n.data 
+        res = check_verification_code(email,code)
+        if res[0] and res[1]:
+            id = res[2]
+            user = DbUser({'id':id,'perfil':'1','temp':'false'})
+            login_user(user)
+            return redirect(url_for('novasenha'))
+        if not res[0]:
+            error = 'Código inválido.'
+        elif not res[1]:
+            error = 'Código expirado, os códigos expiram após 10 minutos.'
+    return render_template('inserircodigo.html',form = form,error = error)
+
+@app.route('/novasenha',methods = ['GET','POST'])
+def novasenha():
+    if not current_user.is_authenticated:
+        return redirect(url_for('recuperarsenha'))
+    elif not current_user.get_temp():
+        abort(401)
+    form = RecPassForm()
+    error = None
+    if form.validate_on_submit():
+        senha = hashlib.sha256(form.senha.data.encode()).hexdigest()
+        confirm = hashlib.sha256(form.confirm.data.encode()).hexdigest()
+        if senha == confirm:
+            trocar_senha(current_user.get_id(),senha)
+            logout_user()
+            return redirect(url_for('login'))
+        else:
+            error = 'As senhas devem ser iguais.'
+    return render_template('novasenha.html',form = form,error = error)
+
 @app.route('/logout')
 @login_required
 def logout():
@@ -104,7 +174,8 @@ def logout():
 @app.route('/admin')
 @login_required
 def admin():
-    return render_template('admin.html')
+    print(current_user._user)
+    return str(private)
 
 @app.route('/minhasigrejas')
 @login_required

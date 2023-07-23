@@ -80,3 +80,18 @@ input[type="submit"]:hover {
     font-family: 'Times New Roman', Times, serif;
     font-size: 18px;
 }
+
+.floating-button:hover {
+    background-color: #444;
+}
+
+.recsenha {
+    padding: 10px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.link {
+    color: black;
+}
