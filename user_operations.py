@@ -44,6 +44,13 @@ def user_login(email,senha):
     user = cur.fetchone()
     if user:
         info = user[0][1:-1].split(',')
+        query = """
+            UPDATE usuarios SET verification=null WHERE email=%s;
+            UPDATE usuarios SET temp='false' WHERE email=%s;
+            """
+        sql = cur.mogrify(query,(email,email))
+        cur.execute(sql)
+        con.commit()
         return {'id':info[0],'perfil':info[1],'temp':info[2]}
     return False
 

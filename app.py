@@ -50,6 +50,7 @@ def verify_permissions():
         return
     if auth and (request.path not in special_case):
         if current_user.get_temp():
+            print(current_user._user)
             return redirect(url_for('novasenha'))
 
 @login_manager.user_loader
