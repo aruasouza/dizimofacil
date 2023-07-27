@@ -4,10 +4,11 @@ from user_forms import *
 from user_operations import *
 import hashlib
 from groups import *
+from key import key
 
 app = Flask(__name__)
-with open('config/key','r') as f:
-    app.config['SECRET_KEY'] = f.read()
+
+app.config['SECRET_KEY'] = key
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -84,7 +85,6 @@ def login():
         user = user_login(email,senha)
         if user: 
             login_user(DbUser(user))
-            flash('Login efetuado com sucesso.')
             return redirect(url_for(next))
         error = 'Usuário ou senha incorretos.'
     return render_template('login.html',form = form,error = error)
@@ -104,7 +104,6 @@ def register():
         if senha == confirm:
             if verify_email(email):
                 create_user(nome,sobrenome,nascimento,sexo,email,senha)
-                flash('Usuário criado com sucesso.')
                 return redirect(url_for('login'))
             else:
                 error = 'Já existe uma conta com esse endereço de email.'
@@ -169,7 +168,6 @@ def novasenha():
 @login_required
 def logout():
     logout_user()
-    flash('Você saiu.')
     return redirect(url_for('login'))
 
 @app.route('/admin')

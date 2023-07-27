@@ -1,8 +1,7 @@
 import smtplib
 from email.message import EmailMessage
+from key import email,passw
 
-with open('config/mail','r') as f:
-    email,passw = f.read().split()
 
 def send_verification_code(user_email,code):
     msg = EmailMessage()

@@ -1,10 +1,10 @@
-with open('config/protected_urls/login_required','r') as f:
+with open('config/login_required','r') as f:
     login_required_urls = set(f.read().split())
 
-with open('config/protected_urls/admin','r') as f:
+with open('config/admin','r') as f:
     admin_urls = f.read().split()
 
-with open('config/protected_urls/admigreja','r') as f:
+with open('config/admigreja','r') as f:
     admigreja_urls = f.read().split()
 
 with open('config/redirect_allow','r') as f:

@@ -3,4 +3,5 @@ activate_venv.txt
 mvp.txt
 scripts
 __pycache__
-config
+protected
+deploy

@@ -1,16 +1,10 @@
 import psycopg2 as pg
-import json
 import random
 import jwt
 from jwt.exceptions import DecodeError
 from datetime import datetime,timedelta
 from mail import send_verification_code
-
-with open('config/database_info.json','r') as f:
-    cred = json.load(f)
-
-with open('config/key','r') as f:
-    key = f.read()
+from key import cred,key
 
 mapa_s = {'Masculino':'m','Feminino':'f'}
 
