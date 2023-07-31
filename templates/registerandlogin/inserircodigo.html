@@ -9,13 +9,14 @@
 </head>
 <body>
     <div class="login-container">
-        <h1>Insira o código</h1>
+        <h2>Enviamos um código de validação para o seu email.</h2>
         {% if error%}
         <p class="erro">{{error}}</p>
         {% endif%}
         <form method="POST" action="">
                 {{ form.hidden_tag() }}
                 <div class="form-group">
+                    <label for="n">Insira o código:</label>
                     {{ form.n }}
                 </div>
                 {{ form.submit }}

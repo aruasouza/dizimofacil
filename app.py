@@ -64,7 +64,7 @@ def load_user(user_id):
 
 @app.route('/')
 def home():
-    return '<h1>Bem vindo, usuário</h1>'
+    return render_template('main.html')
 
 @app.route('/userarea')
 @login_required
@@ -87,7 +87,7 @@ def login():
             login_user(DbUser(user))
             return redirect(url_for(next))
         error = 'Usuário ou senha incorretos.'
-    return render_template('login.html',form = form,error = error)
+    return render_template('registerandlogin/login.html',form = form,error = error)
 
 @app.route('/register',methods = ['GET','POST'])
 def register():
@@ -109,7 +109,7 @@ def register():
                 error = 'Já existe uma conta com esse endereço de email.'
         else:
             error = 'As senhas devem ser iguais.'
-    return render_template('register.html',form = form,error = error)
+    return render_template('registerandlogin/register.html',form = form,error = error)
 
 @app.route('/recuperarsenha',methods = ['GET','POST'])
 def recuperarsenha():
@@ -122,7 +122,7 @@ def recuperarsenha():
             return redirect(url_for('inserircodigo',email = email))
         else:
             error = 'Email não cadastrado.'
-    return render_template('recuperarsenha.html',form = form,error = error)
+    return render_template('registerandlogin/recuperarsenha.html',form = form,error = error)
 
 @app.route('/inserircodigo',methods = ['GET','POST'])
 def inserircodigo():
@@ -143,7 +143,7 @@ def inserircodigo():
             error = 'Código inválido.'
         elif not res[1]:
             error = 'Código expirado, os códigos expiram após 10 minutos.'
-    return render_template('inserircodigo.html',form = form,error = error)
+    return render_template('registerandlogin/inserircodigo.html',form = form,error = error)
 
 @app.route('/novasenha',methods = ['GET','POST'])
 def novasenha():
@@ -162,7 +162,7 @@ def novasenha():
             return redirect(url_for('login'))
         else:
             error = 'As senhas devem ser iguais.'
-    return render_template('novasenha.html',form = form,error = error)
+    return render_template('registerandlogin/novasenha.html',form = form,error = error)
 
 @app.route('/logout')
 @login_required
