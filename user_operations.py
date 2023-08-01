@@ -31,7 +31,7 @@ def create_user(nome,sobrenome,nascimento,sexo,email,senha):
 
 def user_login(email,senha):
     query = """
-            SELECT (id, perfil, temp) FROM usuarios WHERE email=%s AND senha=%s;
+            SELECT (id, nome, perfil, temp) FROM usuarios WHERE email=%s AND senha=%s;
             """
     sql = cur.mogrify(query,(email,senha))
     cur.execute(sql)
@@ -45,20 +45,20 @@ def user_login(email,senha):
         sql = cur.mogrify(query,(email,email))
         cur.execute(sql)
         con.commit()
-        return {'id':info[0],'perfil':info[1],'temp':info[2]}
+        return {'id':info[0],'nome':info[1],'perfil':info[2],'temp':info[3]}
     return False
 
 def get_user(id):
     id = int(id)
     query = """
-            SELECT (id, perfil, temp) FROM usuarios WHERE id=%s;
+            SELECT (id, nome, perfil, temp) FROM usuarios WHERE id=%s;
             """
     sql = cur.mogrify(query,(id,))
     cur.execute(sql)
     user = cur.fetchone()
     if user:
         info = user[0][1:-1].split(',')
-        return {'id':info[0],'perfil':info[1],'temp':info[2]}
+        return {'id':info[0],'nome':info[1],'perfil':info[2],'temp':info[3]}
     return False
 
 def restore_password(email):

@@ -1,5 +1,6 @@
 from flask import Flask,render_template,url_for,redirect,flash,request,abort
 from flask_login import UserMixin, login_user, LoginManager, logout_user, current_user, login_required
+from markupsafe import Markup
 from user_forms import *
 from user_operations import *
 import hashlib
@@ -24,6 +25,8 @@ class DbUser:
         return self._user['perfil']
     def get_temp(self):
         return True if self._user['temp'] == 't' else False
+    def get_name(self):
+        return self._user['nome']
     
 def verify_redirect(next):
     if next in allow_red:
@@ -64,6 +67,8 @@ def load_user(user_id):
 
 @app.route('/')
 def home():
+    if current_user.is_authenticated:
+        return render_template('main.html',name = current_user.get_name())
     return render_template('main.html')
 
 @app.route('/userarea')
