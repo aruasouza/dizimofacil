@@ -11,7 +11,7 @@
 </head>
 <body>
     <header>
-        <h1>Bom Católico</h1>
+        <div class="user-space-container">
         <div class="user-space">
             {% if name %}
             <div class="dropdown">
@@ -26,12 +26,14 @@
             <a class="link" href="{{url_for('login')}}">Entrar</a>
             {% endif %}
         </div>
+        </div>
+        <h1><a class="main-title" href="{{ url_for('home') }}">Bom Católico</a></h1>
         <nav>
             <ul>
-                <li><a href="#">Calendário litúrgico</a></li>
-                <li><a href="#">Horários de missa</a></li>
-                <li><a href="#">Marketplace</a></li>
-                <li><a href="{{ url_for('userarea') }}">Área do usuário</a></li>
+                <button class="menu"><a href="#">Calendário litúrgico</a></button>
+                <button class="menu"><a href="#">Horários de missa</a></button>
+                <button class="menu"><a href="#">Marketplace</a></button>
+                <button class="menu"><a href="{{ url_for('userarea') }}">Área do usuário</a></button>
                 <!-- Add more menu items or pages as needed -->
             </ul>
         </nav>

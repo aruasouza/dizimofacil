@@ -25,7 +25,7 @@ def create_user(nome,sobrenome,nascimento,sexo,email,senha):
     query = """
             INSERT INTO usuarios (nome, sobrenome ,nascimento ,sexo, email, senha, perfil) VALUES (%s, %s, %s, %s, %s, %s, 1);
             """
-    sql = cur.mogrify(query,(nome,sobrenome,nascimento,mapa_s[sexo],email,senha))
+    sql = cur.mogrify(query,(nome.title(),sobrenome.title(),nascimento,mapa_s[sexo],email,senha))
     cur.execute(sql)
     con.commit()
 
