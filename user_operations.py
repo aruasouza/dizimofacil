@@ -115,3 +115,23 @@ def remove_temp(user_id):
     sql = cur.mogrify(query,(user_id,))
     cur.execute(sql)
     con.commit()
+
+def favoritar_igreja(user_id,church_id):
+    user_id = int(user_id)
+    church_id = int(church_id)
+    query = """
+            INSERT INTO igrejasFavoritas (igreja, usuario) VALUES (%s, %s);
+            """
+    sql = cur.mogrify(query,(church_id,user_id))
+    cur.execute(sql)
+    con.commit()
+
+def desfavoritar_igreja(user_id,church_id):
+    user_id = int(user_id)
+    church_id = int(church_id)
+    query = """
+            DELETE FROM igrejasFavoritas WHERE igreja=%s AND usuario=%s;
+            """
+    sql = cur.mogrify(query,(church_id,user_id))
+    cur.execute(sql)
+    con.commit()
