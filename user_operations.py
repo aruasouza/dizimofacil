@@ -1,4 +1,5 @@
 import psycopg2 as pg
+import psycopg2.extras
 import random
 import jwt
 from jwt.exceptions import DecodeError
@@ -9,7 +10,7 @@ from key import cred,key
 mapa_s = {'Masculino':'m','Feminino':'f'}
 
 con = pg.connect(**cred)
-cur = con.cursor()
+cur = con.cursor(cursor_factory = pg.extras.RealDictCursor)
 
 def verify_email(email):
     query = """
@@ -31,13 +32,12 @@ def create_user(nome,sobrenome,nascimento,sexo,email,senha):
 
 def user_login(email,senha):
     query = """
-            SELECT (id, nome, perfil, temp) FROM usuarios WHERE email=%s AND senha=%s;
+            SELECT id, nome, perfil, temp FROM usuarios WHERE email=%s AND senha=%s;
             """
     sql = cur.mogrify(query,(email,senha))
     cur.execute(sql)
     user = cur.fetchone()
     if user:
-        info = user[0][1:-1].split(',')
         query = """
             UPDATE usuarios SET verification=null WHERE email=%s;
             UPDATE usuarios SET temp='false' WHERE email=%s;
@@ -45,21 +45,15 @@ def user_login(email,senha):
         sql = cur.mogrify(query,(email,email))
         cur.execute(sql)
         con.commit()
-        return {'id':info[0],'nome':info[1],'perfil':info[2],'temp':info[3]}
-    return False
+    return user
 
 def get_user(id):
-    id = int(id)
     query = """
-            SELECT (id, nome, perfil, temp) FROM usuarios WHERE id=%s;
+            SELECT id, nome, perfil, temp FROM usuarios WHERE id=%s;
             """
     sql = cur.mogrify(query,(id,))
     cur.execute(sql)
-    user = cur.fetchone()
-    if user:
-        info = user[0][1:-1].split(',')
-        return {'id':info[0],'nome':info[1],'perfil':info[2],'temp':info[3]}
-    return False
+    return cur.fetchone()
 
 def restore_password(email):
     numbers = [str(random.randint(0,9)) for _ in range(4)]
@@ -77,12 +71,12 @@ def restore_password(email):
 def check_verification_code(email,code):
     format = '%Y-%m-%d %H:%M:%S'
     query = """
-            SELECT (id, verification) FROM usuarios WHERE email=%s;
+            SELECT id, verification FROM usuarios WHERE email=%s;
             """
     sql = cur.mogrify(query,(email,))
     cur.execute(sql)
-    id,encoded = cur.fetchone()[0][1:-1].split(',')
-    print(id,encoded)
+    resp = cur.fetchone()
+    id,encoded = resp['id'],resp['verification']
     try:
         decoded = jwt.decode(encoded.encode(), key, algorithms=["HS256"])
     except DecodeError:
@@ -108,7 +102,6 @@ def trocar_senha(user_id,senha):
     con.commit()
 
 def remove_temp(user_id):
-    user_id = int(user_id)
     query = """
             UPDATE usuarios SET temp='false' WHERE id=%s;
             """
@@ -117,8 +110,6 @@ def remove_temp(user_id):
     con.commit()
 
 def favoritar_igreja(user_id,church_id):
-    user_id = int(user_id)
-    church_id = int(church_id)
     query = """
             INSERT INTO igrejasFavoritas (igreja, usuario) VALUES (%s, %s);
             """
@@ -127,8 +118,6 @@ def favoritar_igreja(user_id,church_id):
     con.commit()
 
 def desfavoritar_igreja(user_id,church_id):
-    user_id = int(user_id)
-    church_id = int(church_id)
     query = """
             DELETE FROM igrejasFavoritas WHERE igreja=%s AND usuario=%s;
             """

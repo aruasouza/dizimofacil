@@ -1,9 +1,10 @@
 import psycopg2 as pg
+import psycopg2.extras
 from datetime import date
 from key import cred
 
 con = pg.connect(**cred)
-cur = con.cursor()
+cur = con.cursor(cursor_factory = pg.extras.RealDictCursor)
 
 def get_calendar(year):
     first = date(year,1,1)
@@ -31,13 +32,13 @@ def get_all_church_info(church_id):
     cur.execute(sql)
     info = cur.fetchone()
     query = """
-            SELECT * FROM horariosMissa WHERE id=%s;
+            SELECT * FROM horariosMissa WHERE igreja=%s;
             """
     sql = cur.mogrify(query,(church_id,))
     cur.execute(sql)
     horariosMissa = cur.fetchall()
     query = """
-            SELECT * FROM horariosConfissao WHERE id=%s;
+            SELECT * FROM horariosConfissao WHERE igreja=%s;
             """
     sql = cur.mogrify(query,(church_id,))
     cur.execute(sql)

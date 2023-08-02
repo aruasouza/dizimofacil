@@ -1,6 +1,5 @@
-from flask import Flask,render_template,url_for,redirect,flash,request,abort
-from flask_login import UserMixin, login_user, LoginManager, logout_user, current_user, login_required
-from markupsafe import Markup
+from flask import Flask,render_template,url_for,redirect,request,abort
+from flask_login import login_user, LoginManager, logout_user, current_user, login_required
 from user_forms import *
 from user_operations import *
 import hashlib
@@ -24,7 +23,7 @@ class DbUser:
     def get_perfil(self):
         return self._user['perfil']
     def get_temp(self):
-        return True if self._user['temp'] == 't' else False
+        return self._user['temp']
     def get_name(self):
         return self._user['nome']
     
@@ -141,13 +140,13 @@ def inserircodigo():
         res = check_verification_code(email,code)
         if res[0] and res[1]:
             id = res[2]
-            user = DbUser({'id':id,'perfil':'1','temp':'false'})
+            user = DbUser({'id':id,'perfil':1,'temp':False})
             login_user(user)
             return redirect(url_for('novasenha'))
         if not res[0]:
             error = 'Código inválido.'
         elif not res[1]:
-            error = 'Código expirado, os códigos expiram após 10 minutos.'
+            error = 'Código expirado.'
     return render_template('registerandlogin/inserircodigo.html',form = form,error = error)
 
 @app.route('/novasenha',methods = ['GET','POST'])
