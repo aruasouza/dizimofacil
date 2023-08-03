@@ -38,4 +38,39 @@
             </ul>
         </nav>
     </header>
+    {% if periodo == 'Quaresma' %}
+    <div class="header-roxo"></div>
+    {% elif periodo == 'Advento' %}
+    <div class="header-roxo"></div>
+    {% elif periodo == 'Tempo do Natal' %}
+    <div class="header-branco"></div>
+    {% elif periodo == 'Tempo Pascal' %}
+    <div class="header-branco"></div>
+    {% elif periodo == 'Tríduo Pascal' %}
+    <div class="header-vermelho"></div>
+    {% else %}
+    <div class="header-verde"></div>
+    {% endif %}
+    {% block body %}
+    <div class="corpo">
+        <div class="festas">
+            <img class="banner" src="{{ url_for('static',filename=periodo + '.png') }}">
+            <div class="festas-texto">
+                <p class="periodo">
+                    {{ periodo }}
+                </p>
+                {% for festa in festas %}
+                {% if festa.classe %}
+                <p class="titulo-classe">
+                    {{ festa.classe }}:
+                </p>
+                {% endif %}
+                <p class="festa">
+                    {{ festa.evento }}
+                </p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endblock %}
 </html>

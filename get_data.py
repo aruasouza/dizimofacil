@@ -6,6 +6,13 @@ from key import cred
 con = pg.connect(**cred)
 cur = con.cursor(cursor_factory = pg.extras.RealDictCursor)
 
+classemap = {'S':'Solenidade','M':'Memória obrigatória','m':'Memória','F':'Festa','m*':'Comemoração','':''}
+
+class LiturgicEvent:
+    def __init__(self,realDict):
+        self.classe = classemap[realDict['classe']]
+        self.evento = realDict['evento']
+
 def get_calendar(year):
     first = date(year,1,1)
     last = date(year,12,31)
@@ -22,7 +29,7 @@ def get_day(day):
             """
     sql = cur.mogrify(query,(day,))
     cur.execute(sql)
-    return cur.fetchall()
+    return [LiturgicEvent(d) for d in cur.fetchall()]
 
 def get_all_church_info(church_id):
     query = """

@@ -4,13 +4,6 @@
          url('Olondona.otf');
 }
 
-@media (max-width: 800px) {
-    .user-space-container {
-        width: 100vp;
-        padding: 25px;
-    }
-  }
-
 body, h1, h2, p, ul {
     margin: 0;
     padding: 0;
@@ -36,11 +29,34 @@ body {
     font-size: 16px;
 }
 
+.header-branco {
+    width: 100%;
+    height: 10px;
+    box-shadow: 0 5px 4px rgba(0, 0, 0, 0.2);
+}
+
+.header-verde {
+    width: 100%;
+    height: 10px;
+    box-shadow: 0 10px 8px 2px rgba(0, 200, 0, 0.5);
+}
+
+.header-roxo {
+    width: 100%;
+    height: 10px;
+    box-shadow: 0 10px 8px 2px rgba(129, 0, 165, 0.5);
+}
+
+.header-vermelho {
+    width: 100%;
+    height: 10px;
+    box-shadow: 0 10px 8px 2px rgba(255, 0, 0, 0.5);
+}
+
 header {
     background-color: #fff;
     color: black;
     text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 header nav ul {
@@ -142,3 +158,56 @@ footer {
   /* Change the background color of the dropdown button when the dropdown content is shown */
   .dropdown:hover .dropbtn {background-color: #f1f1f1;
 }
+
+.corpo {
+    margin: auto;
+    padding: 50px;
+    max-width: 1000px;
+}
+
+.periodo {
+    font-weight: bold;
+    font-size: 26px;
+    margin: 20px;
+}
+
+.festa {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.titulo-classe {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.festas {
+    position: relative;
+}
+
+.banner {
+    max-width: 100%;
+    height: auto;
+}
+
+.festas-texto {
+    position: absolute;
+    left: 70%;
+    top: 50%;
+    color: white;
+    max-width: 400px;
+    text-align: center;
+    transform: translate(-50%, -50%);
+}
+
+@media (max-width: 800px) {
+    .user-space-container {
+        width: 100vp;
+        padding: 25px;
+    }
+    .festas-texto {
+        position: static;
+        color: black;
+        transform: translate(0%, 0%);
+    }
+  }

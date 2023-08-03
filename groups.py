@@ -1,3 +1,5 @@
+import json
+
 with open('config/login_required','r') as f:
     login_required_urls = set(f.read().split())
 
@@ -9,6 +11,9 @@ with open('config/admigreja','r') as f:
 
 with open('config/redirect_allow','r') as f:
     allow_red = set(f.read().split())
+
+with open('datafiles/periodos.json','r',encoding = 'utf-8') as f:
+    periodos = json.load(f)
 
 private = {}
 for url in admin_urls:
