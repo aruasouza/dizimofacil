@@ -190,11 +190,21 @@ footer {
     height: auto;
 }
 
-.festas-texto {
+.festas-texto-branco {
     position: absolute;
     left: 70%;
     top: 50%;
     color: white;
+    max-width: 400px;
+    text-align: center;
+    transform: translate(-50%, -50%);
+}
+
+.festas-texto-preto {
+    position: absolute;
+    left: 70%;
+    top: 50%;
+    color: black;
     max-width: 400px;
     text-align: center;
     transform: translate(-50%, -50%);
@@ -205,7 +215,7 @@ footer {
         width: 100vp;
         padding: 25px;
     }
-    .festas-texto {
+    .festas-texto-branco {
         position: static;
         color: black;
         transform: translate(0%, 0%);

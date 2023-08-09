@@ -38,24 +38,12 @@
             </ul>
         </nav>
     </header>
-    {% if periodo == 'Quaresma' %}
-    <div class="header-roxo"></div>
-    {% elif periodo == 'Advento' %}
-    <div class="header-roxo"></div>
-    {% elif periodo == 'Tempo do Natal' %}
-    <div class="header-branco"></div>
-    {% elif periodo == 'Tempo Pascal' %}
-    <div class="header-branco"></div>
-    {% elif periodo == 'Tríduo Pascal' %}
-    <div class="header-vermelho"></div>
-    {% else %}
-    <div class="header-verde"></div>
-    {% endif %}
+    <div class="{{ 'header-' + color }}"></div>
     {% block body %}
     <div class="corpo">
         <div class="festas">
             <img class="banner" src="{{ url_for('static',filename=periodo + '.png') }}">
-            <div class="festas-texto">
+            <div class="{{ 'festas-texto-' + text_color }}">
                 <p class="periodo">
                     {{ periodo }}
                 </p>

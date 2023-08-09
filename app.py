@@ -7,7 +7,7 @@ from get_data import *
 import hashlib
 from groups import *
 from key import key
-from recomendations import get_recomendations
+from hardcoded_data import get_recomendations,color_list,text_color_list
 
 app = Flask(__name__)
 
@@ -70,15 +70,16 @@ def load_user(user_id):
 @app.route('/')
 def home():
     today = date.today()
-    today = date(2023,3,23)
     festas = get_day(today)
     recomendacoes = []
     periodo = periodos[str(today.year)][str(today)]
     for festa in festas:
         recomendacoes += get_recomendations(festa.classe,festa.evento,today.weekday)
     if current_user.is_authenticated:
-        return render_template('main.html',name = current_user.get_name(),festas = festas,rec = recomendacoes,periodo = periodo)
-    return render_template('main.html',festas = festas,rec = recomendacoes,periodo = periodo)
+        return render_template('main.html',name = current_user.get_name(),festas = festas,rec = recomendacoes,periodo = periodo,
+                               color = color_list(periodo),text_color = text_color_list(periodo))
+    return render_template('main.html',festas = festas,rec = recomendacoes,periodo = periodo,
+                           color = color_list(periodo),text_color = text_color_list(periodo))
 
 @app.route('/userarea')
 @login_required
